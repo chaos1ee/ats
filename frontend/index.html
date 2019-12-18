@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>ATS report</title>
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/common.css" />
+    <link rel="stylesheet" href="css/main.css" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="header__logo-container">
+        <img
+          class="header__logo-container__logo"
+          src="img/logo.svg"
+          alt="logo"
+        />
+      </div>
+      <h1 class="header__title">Kubernetes 健康检查</h1>
+    </header>
+
+    <!-- start print -->
+
+    <main class="content">
+      <div class="slogan">
+        <img src="img/slogan_bg.jpg" alt="slogan" />
+        <div class="slogan_text">
+          <h2>专家服务</h2>
+          <p>
+            提供从咨询到实施，从迁云到护航的全周期专业服务，满足各场景下的服务需求
+          </p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">Kubernetes 系统集群状态</h2>
+        </div>
+        <ul class="cluster-status-list">
+          <li class="cluster-status-list-item">
+            <span class="cluster-status-list-item__name">版本：</span>
+            <span class="cluster-status-list-item__value">v1.13.4</span>
+          </li>
+          <li class="cluster-status-list-item">
+            <span class="cluster-status-list-item__name">deployment数量：</span>
+            <span class="cluster-status-list-item__value">302</span>
+          </li>
+          <li class="cluster-status-list-item">
+            <span class="cluster-status-list-item__name">master数量：</span>
+            <span class="cluster-status-list-item__value">30</span>
+          </li>
+          <li class="cluster-status-list-item">
+            <span class="cluster-status-list-item__name">集群启动时长：</span>
+            <span class="cluster-status-list-item__value">118天</span>
+          </li>
+          <li class="cluster-status-list-item">
+            <span class="cluster-status-list-item__name">node数量：</span>
+            <span class="cluster-status-list-item__value">450</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="card health-status">
+        <div class="card-header">
+          <h2 class="card-title">Kubernetes 整体健康状态</h2>
+          <ul class="status-list">
+            <li class="status-list-item">优</li>
+            <li class="status-list-item">良好</li>
+            <li class="status-list-item warning">及格</li>
+            <li class="status-list-item">不及格</li>
+          </ul>
+        </div>
+        <ul class="health-status-list">
+          <li>
+            <div class="health-status-list-item">
+              <div class="health-status-list-item__header">
+                <span>证书状态</span>
+                <ul class="status-list">
+                  <li class="status-list-item">优</li>
+                  <li class="status-list-item">良</li>
+                  <li class="status-list-item warning ">及格</li>
+                  <li class="status-list-item">不及格</li>
+                </ul>
+              </div>
+              <div class="health-status-list-item__body">
+                <div
+                  style="display: flex;justify-content: center;align-items: center;"
+                >
+                  <img src="img/icon_licence.svg" alt="licence" />
+                  <span class="licence-expires">过期时间： 2019-02-23</span>
+                </div>
+              </div>
+            </div>
+            <div class="health-status-list-item">
+              <div class="health-status-list-item__header">
+                <span>node</span>
+                <ul class="status-list">
+                  <li class="status-list-item">优</li>
+                  <li class="status-list-item">良</li>
+                  <li class="status-list-item">及格</li>
+                  <li class="status-list-item error">不及格</li>
+                </ul>
+              </div>
+              <div class="health-status-list-item__body">
+                <div class="chart" id="node-chart"></div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="health-status-list-item">
+              <div class="health-status-list-item__header">
+                <span>etcd</span>
+                <ul class="status-list">
+                  <li class="status-list-item excellent">优</li>
+                  <li class="status-list-item ">良</li>
+                  <li class="status-list-item">及格</li>
+                  <li class="status-list-item">不及格</li>
+                </ul>
+              </div>
+              <div class="health-status-list-item__body">
+                <div class="chart" id="etcd-chart"></div>
+              </div>
+            </div>
+            <div class="health-status-list-item">
+              <div class="health-status-list-item__header">
+                <span>master</span>
+                <ul class="status-list">
+                  <li class="status-list-item">优</li>
+                  <li class="status-list-item success">良</li>
+                  <li class="status-list-item">及格</li>
+                  <li class="status-list-item">不及格</li>
+                </ul>
+              </div>
+              <div class="health-status-list-item__body">
+                <div class="chart" id="master-chart"></div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <table class="other-status-table">
+          <thead>
+            <tr>
+              <th>指标</th>
+              <th>健康指数</th>
+              <th>详情</th>
+              <th>状态</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>pod</td>
+              <td>
+                <div class="bar" id="bar1"></div>
+              </td>
+              <td class="health-index">
+                <ul>
+                  <li>正常：<span class="success">14</span></li>
+                  <li>故障：<span class="error">14</span></li>
+                  <li>总数：<span>18</span></li>
+                </ul>
+              </td>
+              <td>
+                <ul class="status-list">
+                  <li class="status-list-item">优</li>
+                  <li class="status-list-item success">良</li>
+                  <li class="status-list-item">及格</li>
+                  <li class="status-list-item">不及格</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td>pod</td>
+              <td>
+                <div class="bar" id="bar2"></div>
+              </td>
+              <td class="health-index">
+                <ul>
+                  <li>正常：<span class="success">14</span></li>
+                  <li>故障：<span class="error">14</span></li>
+                  <li>总数：<span>18</span></li>
+                </ul>
+              </td>
+              <td>
+                <ul class="status-list">
+                  <li class="status-list-item">优</li>
+                  <li class="status-list-item">良</li>
+                  <li class="status-list-item warning">及格</li>
+                  <li class="status-list-item">不及格</li>
+                </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+
+    <!-- end print -->
+
+    <!-- <script src="js/svg.min.js"></script> -->
+    <script src="js/charts.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>
