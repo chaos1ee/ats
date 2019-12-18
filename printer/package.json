@@ -1,5 +1,5 @@
 {
-  "name": "ats",
+  "name": "printer",
   "version": "1.0.0",
   "description": "",
   "bin": {
@@ -8,11 +8,12 @@
   "scripts": {
     "build": "rm -rf build && npx pkg --out-path build . && cp -r ./node_modules/puppeteer ./build/puppeteer"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "chaos1ee",
+  "license": "MIT",
   "dependencies": {
     "path": "^0.12.7",
     "puppeteer": "^2.0.0",
+    "shelljs": "^0.8.3",
     "yargs": "^15.0.2"
   }
 }

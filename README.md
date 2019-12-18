@@ -1,11 +1,10 @@
-
 ## 介绍
 
-程序分为两个部分：frontend与package。
+程序分为两个部分：frontend与printer。
 
 frontend是一个健康报告静态展示页，供改造成后端模板。
 
-package是一个打包程序，可以将一个nodejs程序打包成可执行文件。
+print是一个puppeteer打印程序，可以将输入的URL打印成PDF，这个程序可以被打包成可执行文件（详见下文），从而不需要安装node.js即可直接执行。
 
 ## frontend
 
@@ -67,7 +66,14 @@ Charts.bar('#bar1', (10 / 30) * 100);
 Charts.bar('#bar2', (10 / 40) * 100);]
 ```
 
-## package
+## printer
+
+使用的工具
+
+- [puppeteer](https://github.com/shelljs/shelljs)
+- [shelljs](https://github.com/shelljs/shelljs)
+- [pkg](https://github.com/zeit/pkg)
+- [yargs](https://github.com/yargs/yargs)
 
 ### install
 
@@ -84,16 +90,12 @@ $ yarn run build
 ### 运行
 
 ```shell
-$ ./build/ats-macos -target https://www.baidu.com -output ./pdf/ats-reporter.pdf
+$ ./build/ats-macos --target https://www.baidu.com --output ./pdf/ats-reporter.pdf
 ```
 
-### options:
+输入`node index.js --help`查看帮助选项。
 
-- target \<required> puppeteer访问的页面
-- output \<optional> 输出pdf文件的路径
-
-
-### 关于页面转化为PDF的方案
+## 关于页面转化为PDF的方案
 
 目前已有的方案大致分为以下几种：
 
