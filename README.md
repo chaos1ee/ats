@@ -4,7 +4,7 @@
 
 frontend是一个健康报告静态展示页，供改造成后端模板。
 
-print是一个puppeteer打印程序，可以将输入的URL打印成PDF，这个程序可以被打包成可执行文件（详见下文），从而不需要安装node.js即可直接执行。
+printer是一个puppeteer打印程序，它的作用是可以将输入的URL指向的页面打印成PDF，这个程序可以被打包成可执行文件（详见下文），从而不需要安装node.js即可直接执行。
 
 ## frontend
 
