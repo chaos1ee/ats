@@ -1,92 +1,106 @@
+h2 {
+	font-size: 20px;
+}
+
+h3 {
+	font-size: 18px;
+}
+
 .card {
-  padding: 20px;
-  margin-bottom: 16px;
-  border-radius: 2px;
-  background: #fff;
+	padding: 20px;
+	margin-bottom: 16px;
+	border-radius: 2px;
+	background: #fff;
 }
 
 .card-header {
-  height: 28px;
-  line-height: 1.4;
-  display: flex;
-  align-items: center;
-  padding-bottom: 16px;
-}
-
-.card-title {
-  font-size: 20px;
+	height: 28px;
+	line-height: 1.4;
+	display: flex;
+	align-items: center;
+	padding-bottom: 16px;
 }
 
 .status-list {
-  display: flex;
-  text-align: center;
-  text-indent: 0;
+	display: flex;
+	text-align: center;
+	text-indent: 0;
 }
 
-.status-list .status-list-item {
-  display: block;
-  height: 20px;
-  line-height: 20px;
-  padding: 0 8px;
-  margin: 0 4px;
-  border-radius: 10px;
-  color: #ccc;
-  background: #f4f4f4;
+.status-item {
+	display: inline-block;
+	height: 20px;
+	line-height: 20px;
+	text-indent: 0;
+	padding: 0 8px;
+	margin: 0 4px;
+	border-radius: 10px;
+	color: #ccc;
+	background: #f4f4f4;
 }
 
-.status-list .status-list-item.excellent,
-.status-list .status-list-item.success,
-.status-list .status-list-item.warning,
-.status-list .status-list-item.error {
-  color: #fff;
+.status-item.excellent,
+.status-item.success,
+.status-item.warning,
+.status-item.error {
+	color: #fff;
 }
 
-.status-list .status-list-item.excellent {
-  background: #006eff;
+.excellent {
+	background: #006eff;
 }
 
-.status-list .status-list-item.success {
-  background: #0abf5b;
+.success {
+	background: #0abf5b;
 }
 
-.status-list .status-list-item.warning {
-  background: #ff9d00;
+.warning {
+	background: #ff9d00;
 }
 
-.status-list .status-list-item.error {
-  background: #e54545;
+.error {
+	background: #e54545;
 }
 
 table {
-  width: 100%;
-  table-layout: fixed;
-  word-break: break-all;
+	width: 100%;
+	table-layout: fixed;
+	word-break: break-all;
 }
 
 table thead {
-  border-top: 1px solid #ededed;
-  border-bottom: 1px solid #ededed;
-  background: #fafafa;
-  font-weight: 500;
+	font-weight: 500;
+}
+
+table thead tr th {
+	background: #fafafa;
+	border-top: 1px solid #ededed;
+	border-bottom: 1px solid #ededed;
 }
 
 table tr,
 table td {
-  line-height: 40px;
-  display: flex;
-  align-items: center;
+	line-height: 40px;
 }
 
 table tr th,
 table tr td {
-  text-align: left;
-  text-indent: 8px;
+	text-align: left;
+	text-indent: 8px;
 }
 
 table tbody tr {
-  border-bottom: 1px solid #ededed;
+	border-bottom: 1px solid #ededed;
 }
 
 table td {
-  width: 100%;
+	width: 100%;
+}
+
+.link {
+	color: #006eff;
+}
+
+a {
+	text-decoration: none;
 }

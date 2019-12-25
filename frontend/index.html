@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="css/main.css" />
   </head>
   <body>
-    <header class="header">
+    <header id="top" class="header">
       <div class="header__logo-container">
         <img
           class="header__logo-container__logo"
@@ -36,7 +36,7 @@
 
       <div class="card">
         <div class="card-header">
-          <h2 class="card-title">Kubernetes 系统集群状态</h2>
+          <h2>Kubernetes 系统集群状态</h2>
         </div>
         <ul class="cluster-status-list">
           <li class="cluster-status-list-item">
@@ -44,11 +44,13 @@
             <span class="cluster-status-list-item__value">v1.13.4</span>
           </li>
           <li class="cluster-status-list-item">
-            <span class="cluster-status-list-item__name">deployment数量：</span>
+            <span class="cluster-status-list-item__name"
+              >deployment 数量：</span
+            >
             <span class="cluster-status-list-item__value">302</span>
           </li>
           <li class="cluster-status-list-item">
-            <span class="cluster-status-list-item__name">master数量：</span>
+            <span class="cluster-status-list-item__name">master 数量：</span>
             <span class="cluster-status-list-item__value">30</span>
           </li>
           <li class="cluster-status-list-item">
@@ -56,7 +58,7 @@
             <span class="cluster-status-list-item__value">118天</span>
           </li>
           <li class="cluster-status-list-item">
-            <span class="cluster-status-list-item__name">node数量：</span>
+            <span class="cluster-status-list-item__name">node 数量：</span>
             <span class="cluster-status-list-item__value">450</span>
           </li>
         </ul>
@@ -64,24 +66,24 @@
 
       <div class="card health-status">
         <div class="card-header">
-          <h2 class="card-title">Kubernetes 整体健康状态</h2>
+          <h2>Kubernetes 整体健康状态</h2>
           <ul class="status-list">
-            <li class="status-list-item">优</li>
-            <li class="status-list-item">良好</li>
-            <li class="status-list-item warning">及格</li>
-            <li class="status-list-item">不及格</li>
+            <li class="status-item">优</li>
+            <li class="status-item">良好</li>
+            <li class="status-item warning">及格</li>
+            <li class="status-item">不及格</li>
           </ul>
         </div>
         <ul class="health-status-list">
           <li>
             <div class="health-status-list-item">
               <div class="health-status-list-item__header">
-                <span>证书状态</span>
+                <h3>证书状态</h3>
                 <ul class="status-list">
-                  <li class="status-list-item">优</li>
-                  <li class="status-list-item">良</li>
-                  <li class="status-list-item warning ">及格</li>
-                  <li class="status-list-item">不及格</li>
+                  <li class="status-item">优</li>
+                  <li class="status-item">良好</li>
+                  <li class="status-item warning ">及格</li>
+                  <li class="status-item">不及格</li>
                 </ul>
               </div>
               <div class="health-status-list-item__body">
@@ -95,46 +97,50 @@
             </div>
             <div class="health-status-list-item">
               <div class="health-status-list-item__header">
-                <span>node</span>
+                <h3>
+                  <a class="link" href="#node">Node</a>
+                </h3>
                 <ul class="status-list">
-                  <li class="status-list-item">优</li>
-                  <li class="status-list-item">良</li>
-                  <li class="status-list-item">及格</li>
-                  <li class="status-list-item error">不及格</li>
+                  <li class="status-item">优</li>
+                  <li class="status-item">良好</li>
+                  <li class="status-item">及格</li>
+                  <li class="status-item error">不及格</li>
                 </ul>
               </div>
               <div class="health-status-list-item__body">
-                <div class="chart" id="node-chart"></div>
+                <canvas id="node-chart" width="534" height="200"></canvas>
               </div>
             </div>
           </li>
           <li>
             <div class="health-status-list-item">
               <div class="health-status-list-item__header">
-                <span>etcd</span>
+                <h3>Etcd</h3>
                 <ul class="status-list">
-                  <li class="status-list-item excellent">优</li>
-                  <li class="status-list-item ">良</li>
-                  <li class="status-list-item">及格</li>
-                  <li class="status-list-item">不及格</li>
+                  <li class="status-item excellent">优</li>
+                  <li class="status-item ">良好</li>
+                  <li class="status-item">及格</li>
+                  <li class="status-item">不及格</li>
                 </ul>
               </div>
               <div class="health-status-list-item__body">
-                <div class="chart" id="etcd-chart"></div>
+                <canvas id="etcd-chart" width="534" height="200"></canvas>
               </div>
             </div>
             <div class="health-status-list-item">
               <div class="health-status-list-item__header">
-                <span>master</span>
+                <h3>
+                  <a class="link" href="#master">Master</a>
+                </h3>
                 <ul class="status-list">
-                  <li class="status-list-item">优</li>
-                  <li class="status-list-item success">良</li>
-                  <li class="status-list-item">及格</li>
-                  <li class="status-list-item">不及格</li>
+                  <li class="status-item">优</li>
+                  <li class="status-item success">良好</li>
+                  <li class="status-item">及格</li>
+                  <li class="status-item">不及格</li>
                 </ul>
               </div>
               <div class="health-status-list-item__body">
-                <div class="chart" id="master-chart"></div>
+                <canvas id="master-chart" width="534" height="200"></canvas>
               </div>
             </div>
           </li>
@@ -142,56 +148,384 @@
       </div>
 
       <div class="card">
+        <div class="card-header">
+          <h2>其它资源健康概览</h2>
+        </div>
         <table class="other-status-table">
           <thead>
             <tr>
-              <th>指标</th>
-              <th>健康指数</th>
-              <th>详情</th>
-              <th>状态</th>
+              <th width="15%">指标</th>
+              <th width="20%">健康指数</th>
+              <th width="40%">详情</th>
+              <th width="25%">状态</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><a class="link" href="#pod">Pod</a></td>
+              <td>
+                <canvas id="bar1" width="160" height="14"></canvas>
+              </td>
+              <td class="health-index">
+                <ul>
+                  <li>正常：<span class="health-index_success">14</span></li>
+                  <li>故障：<span class="health-index_error">14</span></li>
+                  <li>总数：<span>18</span></li>
+                </ul>
+              </td>
+              <td>
+                <ul class="status-list">
+                  <li class="status-item">优</li>
+                  <li class="status-item success">良好</li>
+                  <li class="status-item">及格</li>
+                  <li class="status-item">不及格</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td>Logs</td>
+              <td>
+                <canvas id="bar2" width="160" height="14"></canvas>
+              </td>
+              <td class="health-index">
+                <ul>
+                  <li>正常：<span class="health-index_success">14</span></li>
+                  <li>故障：<span class="health-index_error">14</span></li>
+                  <li>总数：<span>18</span></li>
+                </ul>
+              </td>
+              <td>
+                <ul class="status-list">
+                  <li class="status-item">优</li>
+                  <li class="status-item">良好</li>
+                  <li class="status-item warning">及格</li>
+                  <li class="status-item">不及格</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td>Event</td>
+              <td>
+                <canvas id="bar3" width="160" height="14"></canvas>
+              </td>
+              <td class="health-index">
+                <ul>
+                  <li>正常：<span class="health-index_success">14</span></li>
+                  <li>故障：<span class="health-index_error">14</span></li>
+                  <li>总数：<span>18</span></li>
+                </ul>
+              </td>
+              <td>
+                <ul class="status-list">
+                  <li class="status-item">优</li>
+                  <li class="status-item">良好</li>
+                  <li class="status-item warning">及格</li>
+                  <li class="status-item">不及格</li>
+                </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="page-break-after:always;" id="master" class="resource card">
+        <div class="card-header">
+          <h3>master</h3>
+          <div style="display: flex;align-items: center;">
+            <span style="margin-right: 4px;">状态图例</span>
+            <ul class="status-list">
+              <li class="status-item excellent">优</li>
+              <li class="status-item success">良好</li>
+              <li class="status-item warning">及格</li>
+              <li class="status-item error">不及格</li>
+            </ul>
+          </div>
+        </div>
+        <table class="resource-table">
+          <thead>
+            <tr>
+              <th width="39%">名称</th>
+              <th width="10%">状态</th>
+              <th width="2%"></th>
+              <th width="39%">名称</th>
+              <th width="10%">状态</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugiat
+                dolorum illo sequi, iure tempora ipsa cum perspiciatis
+                voluptatem, cumque in, consectetur qui odit nemo praesentium
+                nesciunt ipsum atque maiores modi.
+              </td>
+              <td>
+                <div class="status-item success">良好</div>
+              </td>
+              <td></td>
+              <td>pod</td>
+              <td>
+                <div class="status-item success">良好</div>
+              </td>
+            </tr>
+            <tr>
+              <td>pod</td>
+              <td>
+                <div class="status-item success">良好</div>
+              </td>
+              <td></td>
+              <td>pod</td>
+              <td>
+                <div class="status-item success">良好</div>
+              </td>
+            </tr>
+            <tr>
+              <td>pod</td>
+              <td>
+                <div class="status-item success">良好</div>
+              </td>
+              <td></td>
+              <td>pod</td>
+              <td>
+                <div class="status-item success">良好</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="page-break-after:always;" id="node" class="resource card">
+        <div class="card-header">
+          <h3>Node: acp2-node-1</h3>
+          <div style="display: flex;align-items: center;">
+            <span style="margin-right: 4px;">状态图例</span>
+            <ul class="status-list">
+              <li class="status-item excellent">优</li>
+              <li class="status-item success">良好</li>
+              <li class="status-item warning">及格</li>
+              <li class="status-item error">不及格</li>
+            </ul>
+          </div>
+        </div>
+        <table class="resource-table">
+          <thead>
+            <tr>
+              <th width="39%">名称</th>
+              <th width="10%">状态</th>
+              <th width="2%"></th>
+              <th width="39%">名称</th>
+              <th width="10%">状态</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td>pod</td>
               <td>
-                <div class="bar" id="bar1"></div>
+                <div class="status-item success">良好</div>
               </td>
-              <td class="health-index">
-                <ul>
-                  <li>正常：<span class="success">14</span></li>
-                  <li>故障：<span class="error">14</span></li>
-                  <li>总数：<span>18</span></li>
-                </ul>
-              </td>
+              <td></td>
+              <td>pod</td>
               <td>
-                <ul class="status-list">
-                  <li class="status-list-item">优</li>
-                  <li class="status-list-item success">良</li>
-                  <li class="status-list-item">及格</li>
-                  <li class="status-list-item">不及格</li>
-                </ul>
+                <div class="status-item success">良好</div>
               </td>
             </tr>
             <tr>
               <td>pod</td>
               <td>
-                <div class="bar" id="bar2"></div>
+                <div class="status-item success">良好</div>
               </td>
-              <td class="health-index">
-                <ul>
-                  <li>正常：<span class="success">14</span></li>
-                  <li>故障：<span class="error">14</span></li>
-                  <li>总数：<span>18</span></li>
-                </ul>
-              </td>
+              <td></td>
+              <td>pod</td>
               <td>
-                <ul class="status-list">
-                  <li class="status-list-item">优</li>
-                  <li class="status-list-item">良</li>
-                  <li class="status-list-item warning">及格</li>
-                  <li class="status-list-item">不及格</li>
-                </ul>
+                <div class="status-item success">良好</div>
+              </td>
+            </tr>
+            <tr>
+              <td>pod</td>
+              <td>
+                <div class="status-item success">良好</div>
+              </td>
+              <td></td>
+              <td>pod</td>
+              <td>
+                <div class="status-item success">良好</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="margin-top: 20px;" class="card-header">
+          <h3>日志</h3>
+          <div style="display: flex;align-items: center;">
+            <span style="margin-right: 4px;">状态图例</span>
+            <ul class="status-list">
+              <li class="status-item excellent">优</li>
+              <li class="status-item success">良好</li>
+              <li class="status-item warning">及格</li>
+              <li class="status-item error">不及格</li>
+            </ul>
+          </div>
+        </div>
+        <table class="resource-table">
+          <thead>
+            <tr>
+              <th width="39%">名称</th>
+              <th width="10%">状态</th>
+              <th width="2%"></th>
+              <th width="39%">名称</th>
+              <th width="10%">状态</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>pod</td>
+              <td>
+                <div class="status-item success">良好</div>
+              </td>
+              <td></td>
+              <td>pod</td>
+              <td>
+                <div class="status-item success">良好</div>
+              </td>
+            </tr>
+            <tr>
+              <td>pod</td>
+              <td>
+                <div class="status-item success">良好</div>
+              </td>
+              <td></td>
+              <td>pod</td>
+              <td>
+                <div class="status-item success">良好</div>
+              </td>
+            </tr>
+            <tr>
+              <td>pod</td>
+              <td>
+                <div class="status-item success">良好</div>
+              </td>
+              <td></td>
+              <td>pod</td>
+              <td>
+                <div class="status-item success">良好</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="page-break-after:always;" id="pod" class="resource card">
+        <div class="card-header">
+          <h3>Pod: pod-1</h3>
+          <div style="display: flex;align-items: center;">
+            <span style="margin-right: 4px;">状态图例</span>
+            <ul class="status-list">
+              <li class="status-item excellent">优</li>
+              <li class="status-item success">良好</li>
+              <li class="status-item warning">及格</li>
+              <li class="status-item error">不及格</li>
+            </ul>
+          </div>
+        </div>
+        <table class="resource-table">
+          <thead>
+            <tr>
+              <th width="39%">名称</th>
+              <th width="10%">状态</th>
+              <th width="2%"></th>
+              <th width="39%">名称</th>
+              <th width="10%">状态</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>pod</td>
+              <td>
+                <div class="status-item success">良好</div>
+              </td>
+              <td></td>
+              <td>pod</td>
+              <td>
+                <div class="status-item success">良好</div>
+              </td>
+            </tr>
+            <tr>
+              <td>pod</td>
+              <td>
+                <div class="status-item success">良好</div>
+              </td>
+              <td></td>
+              <td>pod</td>
+              <td>
+                <div class="status-item success">良好</div>
+              </td>
+            </tr>
+            <tr>
+              <td>pod</td>
+              <td>
+                <div class="status-item success">良好</div>
+              </td>
+              <td></td>
+              <td>pod</td>
+              <td>
+                <div class="status-item success">良好</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="margin-top: 20px;" class="card-header">
+          <h3>日志</h3>
+          <div style="display: flex;align-items: center;">
+            <span style="margin-right: 4px;">状态图例</span>
+            <ul class="status-list">
+              <li class="status-item excellent">优</li>
+              <li class="status-item success">良好</li>
+              <li class="status-item warning">及格</li>
+              <li class="status-item error">不及格</li>
+            </ul>
+          </div>
+        </div>
+        <table class="resource-table">
+          <thead>
+            <tr>
+              <th width="39%">名称</th>
+              <th width="10%">状态</th>
+              <th width="2%"></th>
+              <th width="39%">名称</th>
+              <th width="10%">状态</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>pod</td>
+              <td>
+                <div class="status-item success">良好</div>
+              </td>
+              <td></td>
+              <td>pod</td>
+              <td>
+                <div class="status-item success">良好</div>
+              </td>
+            </tr>
+            <tr>
+              <td>pod</td>
+              <td>
+                <div class="status-item success">良好</div>
+              </td>
+              <td></td>
+              <td>pod</td>
+              <td>
+                <div class="status-item success">良好</div>
+              </td>
+            </tr>
+            <tr>
+              <td>pod</td>
+              <td>
+                <div class="status-item success">良好</div>
+              </td>
+              <td></td>
+              <td>pod</td>
+              <td>
+                <div class="status-item success">良好</div>
               </td>
             </tr>
           </tbody>
@@ -199,9 +533,12 @@
       </div>
     </main>
 
-    <!-- end print -->
+    <a class="elevator" href="#top">
+      <img src="./img/arrow-down.svg" alt="arrow" />
+    </a>
 
-    <!-- <script src="js/svg.min.js"></script> -->
+    <!-- end print -->
+    <script src="js/global.js"></script>
     <script src="js/charts.js"></script>
     <script src="js/main.js"></script>
   </body>

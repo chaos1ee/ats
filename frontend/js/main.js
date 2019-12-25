@@ -1,55 +1,37 @@
-document.addEventListener('DOMContentLoaded', function() {
-  // charts
-  Charts.ring('#node-chart', [
-    {
-      name: '数学',
-      value: 100
-    },
-    {
-      name: '历史',
-      value: 50
-    },
-    {
-      name: '英语',
-      value: 0
-    }
-  ]);
+window.addEventListener("load", function() {
+  new Chart("#node-chart", {
+    type: "doughnut",
+    legend: ["数学", "历史", "英语"],
+    data: [100, 50, 50],
+    label: { text: "50%", color: COLORS[1] }
+  });
 
-  Charts.ring('#etcd-chart', [
-    {
-      name: '儿童',
-      value: 35
-    },
-    {
-      name: '青年',
-      value: 69
-    },
-    {
-      name: '成年',
-      value: 55
-    },
-    {
-      name: '老年',
-      value: 60
-    }
-  ]);
+  new Chart("#etcd-chart", {
+    type: "doughnut",
+    legend: ["人工智能", "大数据", "前端", "后端"],
+    data: [2132, 1247, 3246, 4223],
+    label: { text: "34%", color: COLORS[1] }
+  });
 
-  Charts.ring('#master-chart', [
-    {
-      name: 'JavaScript',
-      value: 68
-    },
-    {
-      name: 'Python',
-      value: 56
-    },
-    {
-      name: 'Go',
-      value: 53
-    }
-  ]);
+  new Chart("#master-chart", {
+    type: "doughnut",
+    legend: ["Javascript", "Python", "Go"],
+    data: [80, 30, 20],
+    label: { text: "23%", color: COLORS[1] }
+  });
 
-  // progress bars
-  Charts.bar('#bar1', (10 / 30) * 100);
-  Charts.bar('#bar2', (10 / 40) * 100);
+  new Chart("#bar1", {
+    type: "bar",
+    data: -1
+  });
+
+  new Chart("#bar2", {
+    type: "bar",
+    data: 0.7523
+  });
+
+  new Chart("#bar3", {
+    type: "bar",
+    data: 1.0
+  });
 });

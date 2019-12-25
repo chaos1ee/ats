@@ -1,293 +1,179 @@
-Object.prototype.setAttributes =
-  Object.prototype.setAttributes ||
-  function(attributes) {
-    const that = this;
+const FONT_SIZE = 12;
+const COLORS = ["#e54545", "#0abf5b", "#006eff", "#ff9d00"];
 
-    if (!_isDOM(that)) {
-      throw Error('This must be DOM Element');
-      return;
-    }
+const CHARTS = [
+  {
+    type: "doughnut",
+    method: "_doughnut"
+  },
+  {
+    type: "bar",
+    method: "_bar"
+  }
+];
 
-    Object.entries(attributes).forEach(function(item) {
-      that.setAttribute(item[0], item[1]);
-    });
+class Legend {
+  constructor(ctx, text, x, y, color) {
+    const r = 4;
+    const startAngle = 0;
+    const endAngle = 2 * Math.PI;
 
-    return that;
-  };
+    ctx.beginPath();
+    ctx.fillStyle = color;
+    ctx.arc(x, y, r, startAngle, endAngle);
+    ctx.fill();
+    ctx.closePath();
 
-// creating svg element under the specific namespace
-// otherwise the svg element can't be recognized
-const SVG_VERSION = 'http://www.w3.org/2000/svg';
-
-function _createSVGElem(tagName) {
-  return document.createElementNS(SVG_VERSION, tagName);
-}
-
-function _isObject(obj) {
-  return Object.prototype.toString.call(obj) === '[object Object]';
-}
-
-function _isDOM(obj) {
-  if (typeof HTMLElement === 'object') {
-    return obj instanceof HTMLElement;
-  } else {
-    return (
-      obj &&
-      typeof obj === 'object' &&
-      obj.nodeType === 1 &&
-      typeof obj.nodeName === 'string'
-    );
+    ctx.beginPath();
+    ctx.textBaseline = "middle";
+    ctx.fillStyle = "Black";
+    ctx.font = `${FONT_SIZE}px serif`;
+    ctx.fillText(text, x + 10, y);
+    ctx.closePath();
   }
 }
 
-const Charts = (function() {
-  /**
-   * painting rings
-   * @param {string} selector css selector
-   * @param {array} data
-   */
-  function ring(selector, data, emphasis) {
-    const R = 30;
-    const COLORS = ['#0abf5b', '#006eff', '#ff9d00', '#e54545'];
+class Chart {
+  constructor(selector, options) {
+    this.options = options;
 
-    let svg, container;
+    const ctx = this._init(selector);
 
-    try {
-      ({ svg, container } = _init(selector));
-    } catch (err) {
-      throw err;
+    const chart = CHARTS.find(chart => chart.type === options.type);
+
+    if (options.type && chart) {
+      this[chart.method].call(this, ctx, this.options);
     }
-
-    if (!Array.isArray(data)) {
-      console.error("'data' param must be array.");
-      return;
-    }
-
-    const DATA = data.slice(0).map(function(item) {
-      item.value = Math.abs(item.value);
-      return item;
-    });
-
-    const VIEWBOX_WIDTH = 100;
-    const VIEWBOX_HEIGHT = 100;
-
-    svg.setAttributes({
-      style: 'width: 100%;height: 100%;',
-      viewBox: `0 0 ${VIEWBOX_WIDTH} ${VIEWBOX_HEIGHT}`
-    });
-
-    const COUNT = DATA.reduce(function(acc, curr) {
-      acc += curr.value;
-      return acc;
-    }, 0);
-
-    if (COUNT === 0) {
-      console.error('Sum of all data must be greater than 0');
-      return;
-    }
-
-    function appendRings() {
-      const g = _createSVGElem('g');
-
-      // stroke-dashoffset
-      let offset = 0;
-      const L = 2 * Math.PI * R;
-
-      let degree = -90;
-
-      DATA.forEach(function(item, idx) {
-        if (item.value === 0) {
-          return;
-        }
-
-        const circle = _createSVGElem('circle');
-        let l = (item.value / COUNT) * L;
-
-        circle.setAttributes({
-          r: R,
-          cx: VIEWBOX_WIDTH / 2,
-          cy: VIEWBOX_HEIGHT / 2,
-          fill: 'transparent',
-          transform: `rotate(${degree},50,50)`,
-          stroke: COLORS[idx % COLORS.length],
-          'stroke-width': 5,
-          'stroke-dasharray': l - L / 180 + ',' + L
-        });
-
-        g.appendChild(circle);
-
-        degree += (item.value / COUNT) * 360;
-      });
-
-      svg.appendChild(g);
-    }
-
-    function appendLegends() {
-      const _R = 2;
-      const FONT_SIZE = 6;
-      const COLOR = '#333';
-      const CUSTOM_SPACE_SIZE = 20;
-      const LEN = data.length;
-
-      let x = VIEWBOX_WIDTH / 2 + R + CUSTOM_SPACE_SIZE;
-      let y = VIEWBOX_HEIGHT / 2 - (LEN / 2) * (LEN / 2 - 0.5) * FONT_SIZE;
-
-      const text = _createSVGElem('text');
-
-      text.setAttributes({
-        'font-size': FONT_SIZE,
-        'dominant-baseline': 'middle'
-      });
-
-      DATA.forEach(function(item, idx) {
-        const circle = _createSVGElem('circle');
-
-        circle.setAttributes({
-          r: _R,
-          cx: x - _R * 2,
-          cy: y + _R / 2,
-          fill: COLORS[idx % COLORS.length]
-        });
-
-        const tspan = _createSVGElem('tspan');
-        tspan.innerHTML = `${item.name || '-'}&nbsp;${item.value}`;
-
-        tspan.setAttributes({
-          x: x,
-          y: y,
-          fill: COLOR
-        });
-
-        svg.appendChild(circle);
-        text.appendChild(tspan);
-
-        y += FONT_SIZE * 2;
-      });
-
-      svg.appendChild(text);
-    }
-
-    function appendEmphasis() {
-      const text = _createSVGElem('text');
-
-      let emphasisItem = data.find(function(item) {
-        return item.name === emphasis;
-      });
-
-      if (!emphasisItem) {
-        emphasisItem = data[0];
-      }
-
-      text.setAttribute('font-size', '0');
-
-      text.innerHTML = `
-        <tspan
-          x="50%"
-          y="50%"
-          fill="${COLORS[0]}"
-          font-size="12"
-          text-anchor="middle"
-          alignment-baseline="middle"
-        >${((emphasisItem.value / COUNT) * 100).toFixed(0)}</tspan>
-        <tspan 
-          font-size="6"
-          text-anchor="middle"
-          alignment-baseline="middle"
-        >%</tspan>
-      `;
-
-      svg.appendChild(text);
-    }
-
-    appendRings();
-    appendLegends();
-    appendEmphasis();
-    container.appendChild(svg);
   }
 
-  /**
-   * painting bar
-   * @param {string} selector css selector
-   * @param {number} percent
-   */
-  function bar(selector, percent) {
-    const COLOR = '#0abf5b';
-    let svg, container;
+  _init(selector) {
+    const canvas = document.querySelector(selector);
+    const ctx = canvas.getContext("2d");
+    const ratio = getPixelRatio(ctx);
 
-    try {
-      ({ svg, container } = _init(selector));
-    } catch (err) {
-      throw err;
-    }
+    this.width = canvas.width;
+    this.height = canvas.height;
 
-    if (Number.isNaN(percent)) {
-      console.error("'data' param must be number.");
-      return;
-    }
+    canvas.style.width = this.width + "px";
+    canvas.style.height = this.height + "px";
 
-    if (percent < 0) {
-      console.error("Param 'percent' must be greater than 0");
-      return;
-    }
+    canvas.width = this.width * ratio;
+    canvas.height = this.height * ratio;
 
-    svg.setAttributes({
-      height: '8',
-      viewBox: '0 0 100 8'
-    });
+    ctx.scale(ratio, ratio);
 
-    const line = _createSVGElem('line');
-    const rect = _createSVGElem('rect');
+    ctx.lineWidth = 10;
 
-    line.setAttributes({
-      x1: 0,
-      y1: 4,
-      x2: percent,
-      y2: 4,
-      fill: 'none',
-      'stroke-width': 10,
-      stroke: COLOR
-    });
-
-    rect.setAttributes({
-      x: 0,
-      y: 0,
-      style: "width: 100%;height: '100%'",
-      fill: 'none',
-      stroke: COLOR,
-      'stroke-width': 1
-    });
-
-    svg.appendChild(line);
-    svg.appendChild(rect);
-
-    container.appendChild(svg);
-
-    const span = document.createElement('span');
-    span.innerHTML = percent.toFixed(2) + '%';
-    container.appendChild(span);
+    return ctx;
   }
 
-  /**
-   * init container and svg element
-   * @param {string} selector css selector
-   */
-  function _init(selector) {
-    const container = document.querySelector(selector);
-
-    if (!container) {
-      throw Error("'selector' param must be valid CSS selector.");
-    }
-
-    const svg = _createSVGElem('svg');
-
-    return {
-      container: container,
-      svg: svg
-    };
+  _doughnut(ctx) {
+    this._drawArcs(ctx, this.options.data);
+    this._drawLegends(ctx, this.options.legend);
+    this._drawLabel(ctx);
   }
 
-  return {
-    bar: bar,
-    ring: ring
-  };
-})();
+  _bar(ctx) {
+    const x = 0;
+    const y = 2;
+
+    ctx.font = "14px serif";
+    const font = ctx.measureText("100.00%");
+
+    const distance = 6;
+    const borderWidth = 1;
+
+    const barWidth = this.width - font.width - distance;
+    const barHeight = this.height - 4;
+
+    let data = this.options.data;
+
+    data = data >= 0 && data <= 1 ? data : 0;
+
+    const color = COLORS[1];
+
+    const ratio = 1 - data;
+    const maxClearRectWidth = barWidth - 2 * borderWidth;
+    const clearRectWidth = ratio * maxClearRectWidth;
+    const clearRectX = barWidth - borderWidth - clearRectWidth;
+
+    ctx.beginPath();
+    ctx.lineWidth = borderWidth;
+    ctx.strokeStyle = color;
+    ctx.fillStyle = color;
+    ctx.strokeRect(x, y, barWidth, barHeight);
+    ctx.fillRect(x, y, barWidth, barHeight);
+    ctx.clearRect(clearRectX, y, clearRectWidth, barHeight);
+    ctx.closePath();
+
+    let text = (data * 100).toFixed(2) + "%";
+
+    ctx.beginPath();
+    ctx.textBaseline = "top";
+    ctx.fillStyle = "#000000";
+    ctx.fillText(text, barWidth + distance, 0);
+    ctx.closePath();
+  }
+
+  _drawArcs(ctx, data) {
+    let x = 0;
+    let y = 0;
+    let r = 60;
+    let startAngle = 0;
+    let endAngle = 0;
+    let color;
+    const degree = Math.PI / 180;
+
+    const arr = data.filter(item => item > 0);
+    const total = sum(arr);
+
+    ctx.translate(this.width / 2, this.height / 2);
+    ctx.rotate(-90 * degree);
+
+    for (let i = 0; i < arr.length; i++) {
+      startAngle = endAngle;
+      endAngle = startAngle + (arr[i] * 2 * Math.PI) / total;
+
+      color = COLORS[i % COLORS.length];
+
+      ctx.beginPath();
+      ctx.strokeStyle = color;
+      ctx.arc(x, y, r, startAngle + degree, endAngle - degree);
+      ctx.stroke();
+      ctx.closePath();
+    }
+  }
+
+  _drawLegends(ctx, data) {
+    let x = 100;
+    let y = 0;
+
+    const DISTANCE = 8;
+    const count = data.length;
+
+    ctx.translate(0, 0);
+    ctx.rotate((90 * Math.PI) / 180);
+
+    for (let i = 0; i < count; i++) {
+      y = (FONT_SIZE + DISTANCE) * (0.5 - count / 2 + i);
+
+      new Legend(ctx, data[i], x, y, COLORS[i % COLORS.length]);
+    }
+  }
+
+  _drawLabel(ctx) {
+    const x = 0;
+    const y = 0;
+    const font_size = 22;
+    const text = this.options.label.text;
+    const color = this.options.label.color;
+
+    ctx.beginPath();
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillStyle = color;
+    ctx.font = `${font_size}px serif`;
+    ctx.fillText(text, x, y);
+    ctx.closePath();
+  }
+}
