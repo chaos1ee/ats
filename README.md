@@ -89,13 +89,19 @@ new Chart(cssSelector, options)
 $ yarn
 ```
 
-### 打包
+### 在安装node.js的环境下运行
+
+```shell
+node ./printer/index.js --target http://192.168.0.200:5000
+```
+
+### 打包成可执行程序
 
 ```shel
 $ yarn run build
 ```
 
-### 运行
+### 运行可执行程序
 
 ```shell
 $ ./build/ats-macos --target https://www.baidu.com --output ./pdf/ats-reporter.pdf
