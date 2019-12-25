@@ -14,7 +14,7 @@ printer是一个puppeteer打印程序，它的作用是可以将输入的URL指�
 
 ### charts.js 使用方式
 
-`charts.js`是基于canvas写的一个图形库，目前仅支持环状图和进度条两种图形。
+`charts.js`是一个基于canvas的图形库，目前仅支持环状图和进度条两种图形。
 
 使用方式如下：
 
